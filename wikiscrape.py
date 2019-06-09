@@ -1,9 +1,9 @@
-
+#!/usr/bin/env python
 # coding: utf-8
 
-# In[17]:
+# In[ ]:
 
-import math
+
 import requests #Get the HTML code
 from bs4 import BeautifulSoup #Tidy up the code
 from collections import Counter #Counter to count occurances of each word
@@ -11,31 +11,31 @@ import matplotlib.pyplot as plt #graph plotting
 import re #regular expression to check if language setting is exactly 2 letters (for non common langs) in the argument
 import os #for plotwords to tell where file is saved
 
+#var = wikiscrape.wiki('Article Search',optional arguments 2-4)
+#Arg 1 is article name in string, Arg 2 is to format in proper case (default Yes), Arg 3 is language (default EN), Arg 4 is use stoplist of NLTK (default No)
 class wiki:
 
-    #the main features of cleaning the wiki site and whether the site is valid is run in __init__
-    
+    #The main features of cleaning the wiki site and whether the site is valid is run in __init__
     def __init__(self,title,option='Yes',lang='en',checknltk='No'):
         print("Page is loading...\n")
         self.graphtitle = title #for graph title labelling
         if isinstance(title, str) == True:
             if str(option).lower() == 'yes' or str(option) == '':
-                self.title = str(title.title()) #title on LHS is variable input, RHS is function for proper case/title case
+                self.title = str(title.title()) 
                 print("Search text formatted to title/proper case by default. Set second argument as 'No' to disable formatting")
             elif str(option).lower() == 'no':
                 print("Search text has preserved the cases of each letter. Set second argument as 'Yes' to format to title/proper case")
                 self.title = title
             else:
-                self.title = title.title() #title on LHS is variable input, RHS is function for proper case/title case
+                self.title = title.title() 
                 print('Invalid option for preserving case of search text, title/proper case will be used by default')
-            #As long as title is string, regardless of option the replacement for title for URL can be done
             self.title = str(self.title.replace(" ", "_")) #Convert spaces to _ as is Wikipedia page format
         else:
             print('Error encountered, search text (first argument) is not written as a string with quotes. Please try again')
         
         
-        #Checking if you should use NLTK library, default set to False
-        self.nltkrun = False #default is don't use it for stoplist
+        #Checking if you should use NLTK library for stoplist, default set to False
+        self.nltkrun = False 
         if isinstance(checknltk, str): #check for string yes, no and other permutations
             if checknltk.lower().strip() in {'yes','true','y','t'}:
                 import nltk
@@ -132,7 +132,7 @@ class wiki:
             self.lang = 'en'
             print('Invalid language settings or not in string format, hence English articles used by default\n')
         
-        
+        #Get URL of Wikipedia Article
         self.url = 'https://' + self.lang + '.wikipedia.org/wiki/' + self.title #combine the two to get full URL
 
         try: 
@@ -144,38 +144,32 @@ class wiki:
             print('Error with language settings, English used as default\n')
 
         self.contents = self.page.content 
-        self.soup = BeautifulSoup(self.contents, 'html.parser') #Parse the HTML nicely with formatting
-        
+        #Parse the HTML nicely with formatting
+        self.soup = BeautifulSoup(self.contents, 'html.parser') 
         
         self.trancetext = self.soup.find_all('p') #obtain all paragraphs starting with tag <p>
         self.trancetext2 = self.soup.find_all('li') #obtain all paragraphs starting with tag <li>
-#         self.trancetext3 = self.soup.find_all('dd')
 
-        #get paragraphs from trancetext with special format into a list
+        #Get paragraphs from trancetext with special format into a list
         self.para=[]
         for paragraph in self.trancetext: #append paragraphs starting with <p>
             self.para.append(paragraph)
 
-        self.relatedtopic = ",*RELATED WIKI TOPIC*" #to add to points with a link and are on sidebar
+        self.relatedtopic = ",*RELATED WIKI TOPIC*" #Identify topics in Wikipedia with an URL to point out to user
         for paragraph in self.trancetext2: #append paragraphs starting with <li>
             if str(paragraph).find('<li><a href=') != -1:
                 if str(paragraph).find('</a></li>') != -1 or str(paragraph).find('</a></sup></li>') != -1: 
                     self.para.append(self.relatedtopic)
             if str(paragraph).find('toctext') == -1: #remove Wiki headers 1.2.3 with toctext as they can't be arranged properly
                 self.para.append(paragraph)
-
-#         for paragraph in self.trancetext3: #append paragraphs starting with <li>
-#             if str(paragraph).find('<a href=') != -1:
-#                 self.para.append(paragraph)
-#                 self.para.append(self.relatedtopic)
-
     
         #REASON WHY WE HAVE TO DO TWO FOR LOOPS WITH TWO TRANCETEXT IS BECAUSE THE FIND_ALL FOR ARRAY IS NOT IN ORDER
-        #COMMENCE CLEANING OF NONSENSE HTML <> and WIKI LINK [no]
+        #COMMENCE CLEANING OF UNWANTED HTML <> and WIKI LINK [no]
         
         #For FIXING the summary function
         self.troubleshoot = self.para
         
+        #DATA CLEANING OF UNWANTED HTML <> and []
         self.para = list(str(self.para)) #chop everything into letters for cleaning
         
         #This block of code removes the first letter [, removes any words with <> html tag or [] citation
@@ -186,7 +180,7 @@ class wiki:
         self.bracket = 0 #check if letter is inside bracket
         self.li = 0 #check for <li> to line break
         self.p = 0 #check for <p> to line break
-        self.point = 0 #after <li>, puts a • before adding new letter
+        self.point = 0 #after <li> or list, puts a • before adding new letter
         self.para2 = []
         for letter in self.para:
             if self.first == 0:
@@ -240,7 +234,7 @@ class wiki:
         self.para1 = []
         
         
-        #WORD COUNT (SELF.PARA3) AND COMMON WORDS (SELF.TRANCECOUNTER)
+        #GET WORD COUNT (SELF.PARA3) AND FREQUENCY OF COMMON WORDS (SELF.TRANCECOUNTER)
         
         self.para3 = self.para2.split() #split paragraphs into words again for counting
         self.niceword = ''
@@ -252,7 +246,7 @@ class wiki:
                 self.niceword = self.niceword.replace(punctuation,'') #clean up bad punctuation
             self.para3[index] = self.niceword 
         self.trancecounter = Counter(self.para3) 
-        #counter solely used for word count, cannot be used as banlist not implemented yet. 
+        #counter solely used for word count, need another counter for words after the word stoplist is implemented. 
         #Make new trancecounter2+banlist for use
         self.allwords = dict(self.trancecounter.most_common()) 
         #convert to dictionary so that for loop can extract words + do unique word count + total word count
@@ -340,15 +334,18 @@ class wiki:
         self.goodsite = 1
         self.offsite = 0
         
-        for sentence in self.trancetext: #check if a site goes through but it is an ambiguous site (recommendations page)
+        #Check if a site goes through but it is an ambiguous site (recommendations page)
+        for sentence in self.trancetext: 
             #refer to: phrase belongs in a <p> paragraph
             if str(sentence).find("refer to:") != -1:
                 self.offsite = 1            
         
-        for sentence in self.missing: #RUN THROUGH EVERY ELEMENT IN LIST
+        #Check if Wikipedia article exists
+        for sentence in self.missing: 
             if str(sentence) == "<b>Wikipedia does not have an article with this exact name.</b>": #CONVERT ELEMENT TO STRING TYPE BEFORE CHECK!!!
                 self.goodsite = 0 #sentence exists, bad site means counter flips to 0
         
+        #Confirmation for successful Wikipedia site load
         if self.goodsite == 1 and self.offsite == 0:
             print('Wikipedia page loaded successfully!! Type variablename.HELP() for documentation of functions.')
         
@@ -356,17 +353,18 @@ class wiki:
             self.parashort = []
             self.noofpara = 0
             for paragraph in self.trancetext: #append ONLY 2 paragraphs starting with <p>
-                if self.noofpara < 2 and str(paragraph) != '<p class="mw-empty-elt">\n</p>' and len(str(paragraph)) > 199 and str(paragraph).find('.svg') == -1: 
+                if self.noofpara < 2 and str(paragraph) != '<p class="mw-empty-elt">\n</p>' and len(str(paragraph)) > 199: 
                     self.parashort.append(paragraph)
                     self.noofpara += 1
 
+            #Data cleaning for printing out summary of Wikipedia (2 paragraphs) if search is successful
             self.parashort = list(str(self.parashort)) #chop everything into letters for usage
-            self.start = 0 #is letter currently inside tag <>
-            self.end = 0 #has <> just ended, need to check for , if it just ended to not copy a comma after <>
-            self.first = 1 #first letter is [, need to omit
-            self.bracket = 0 #check if letter is inside bracket
-            self.li = 0 #check for <li> to line break
-            self.p = 0 #check for <p> to line break
+            self.start = 0 
+            self.end = 0 
+            self.first = 1 
+            self.bracket = 0 
+            self.li = 0 
+            self.p = 0 
             self.parashort2 = []
             for letter in self.parashort:
                 if self.first == 0:
@@ -407,6 +405,7 @@ class wiki:
             print(self.parashort2)
             #print two paragraphs when search is successful
             
+        #Ambiguous search detecton and suggested article names
         elif self.goodsite == 1 and self.offsite == 1:
             print('\nThe title "'+ self.title.replace("_", " ") + '" you specified is ambiguous. As a result, you are linked to a clarification page.\n\n')
             print('Here are some suggestions to use: \n')
@@ -443,10 +442,11 @@ class wiki:
                     print(link)
             
         else:
+            #Unable to fnd Wikipedia Page
             print('Wikipedia page could not be found for "' + str(self.title.replace("_", " ")) + '". Please try again!') 
             print('Other useful information: Enclose title argument with single quotes. Spaces are allowed, and title is case insensitive.')
         
-    
+    #Retrieves full text of Wikipedia Article, 'Yes' for 2nd argument to output/return it instead of print
     def gettext(self,outfull='No'): #comes after init
         if isinstance(outfull, str): #check for string yes, no and other permutations
             if outfull.lower().strip() in {'yes','true','y','t'}:
@@ -469,7 +469,7 @@ class wiki:
             print("2nd argument not a string, full text is printed by default. To set as output, put 'yes' in argument")
             print(self.para2)
 
-        
+    #Show frequency count of most common words, able to select number of words to output
     def commonwords(self,wordcount=100):
         self.wordcount = 100
         if wordcount != 100 and isinstance(wordcount, int) == True:
@@ -480,6 +480,8 @@ class wiki:
         self.topwords = dict(self.trancecounter.most_common(self.wordcount))
         return self.topwords
         
+    #Show frequency count of most common words based on percentage of word count in the article
+    #e.g. 10% of 10,000 words is 1,000 words, the N most common words with total frequency =< 1000 will be retrieved
     def commonwordspct(self,percent=10):
         self.percent = 10
         if isinstance(percent, int) == True or isinstance(percent, float) == True:
@@ -508,6 +510,7 @@ class wiki:
         else:
             print('The most common word has a percentage occurance higher than the threshold set as the percentage set is too low.\n')
     
+    #Determine total word count and unique word count after banlist/word stoplist
     def totalwords(self): #word count are all BEFORE banlist
         print('Total word count is ' + str(self.fullcount))
         print('Total word count is ' + str(self.fullcount2) + ' after implementing banlist\n')
@@ -515,6 +518,7 @@ class wiki:
         print('Unique word count AFTER BANLIST is ' + str(self.fullwords2) + ' for the Wikipedia site titled ' + str(self.title.replace("_", " ")))
         return [self.fullcount,self.fullcount2,self.fullwords,self.fullwords2]
     
+    #Plot the most common words, 2nd argument allows you to choose number of words to plot, and 3rd arg is the Nth most common word to start plotting from
     def plotwords(self,wordcount2=20,start=1):
         if isinstance(wordcount2, int) == True and isinstance(start, int) == True:
             if start < 1 or wordcount2 < 1:
@@ -545,11 +549,7 @@ class wiki:
             elif self.wordno_graph == self.wordcount2:
                 break
                 #stop loop once required words are retrieved
-
-        #Banlist for year            
-#         yearban = ('2019','2018','2017','2016','2015','2014','2013','2012','2011','2010')
-#         for word in yearban: #deleteyears 2009 to 2019
-#             self.topwords2.pop(word,None)                  
+              
                     
         #matplotlib.pyplot.bar(range, height, tick_label)
         self.wordnames = list(self.topwords2.keys())
@@ -557,12 +557,10 @@ class wiki:
 
         #tick_label does the some work as plt.xticks()
         plt.figure(figsize=(22, 12), dpi= 80, facecolor='w', edgecolor='k')
-        plt.rc('xtick', labelsize=math.ceil(30*math.exp(-self.wordno_graph*0.05))+4) 
-        plt.rc('ytick', labelsize=20) 
-        plt.style.use('ggplot')
         self.localgraph = plt.bar(range(len(self.topwords2)),self.wordvalues,tick_label=self.wordnames)
         plt.title('Word Frequency of Wiki Article: ' + self.graphtitle + ' for the Top ' + str(self.wordno_graph) + ' words, starting from word number ' + str(self.start),fontsize=18)
         
+        #Colored bar graphs divided by green (most frequent words), orange (moderate), red (not as frequent)
         for i in range(self.wordno_graph):
             if i <= float(self.wordno_graph)/3:
                 self.localgraph[i].set_color('green')
@@ -589,6 +587,7 @@ class wiki:
 #         plt.show()
 
 
+    #Plot the most commonly cited Years in the article for time analytics, able to change number of Years to show
     def plotyear(self,yearcount3=20):
         if isinstance(yearcount3, int) == True:
             if yearcount3 < 1:
@@ -631,9 +630,6 @@ class wiki:
 
         #tick_label does the some work as plt.xticks()
         plt.figure(figsize=(22, 12), dpi= 80, facecolor='w', edgecolor='k')
-        plt.rc('xtick', labelsize=math.ceil(53*math.exp(-self.actualyearcount*0.06))+4) 
-        plt.rc('ytick', labelsize=20) 
-        plt.style.use('ggplot')
         self.yeargraph = plt.bar(range(len(self.yearlist)),self.yearvalues,tick_label=self.yearnames)
         plt.title('Interest in ' + self.graphtitle + ' over the years measured by Frequency Count of each Year',fontsize=20)
         
@@ -657,7 +653,7 @@ class wiki:
         self.cwd = os.getcwd()
         print('Graph is saved as yearcount.png in directory: ' + str(self.cwd))
     
-
+    #Retrieve summary of Wikipedia article, able to choose number of paragraphs (1st arg), and to return/output as string (2nd arg) instead of print
     def summary(self, paravalue=2, outsummary='no'):
         self.paravalue = 2
         if isinstance(paravalue, int) == True:
@@ -668,7 +664,7 @@ class wiki:
         else:
             print('The number of paragraphs specified is not an integer. Default 2 paragraphs will be displayed \n')
         
-        #MAKE AN ARRAY AND STRING FOR JUST 2 PARAGRAPHS!
+        #MAKE AN ARRAY AND STRING FOR JUST N PARAGRAPHS!
         self.parashort = []
         self.noofpara = 0
         for paragraph in self.trancetext: #append ONLY 2 paragraphs starting with <p>
@@ -742,13 +738,14 @@ class wiki:
             print("2nd argument not a string, summary is printed by default. To set as output, put 'yes' in 2nd argument")
             print(self.parashort2)
             
-         
+    #HELP and basic documentation of available functions
     def HELP(self):
         print('The wiki() class accepts 4 arguments. The first one is a compulsory title of the Wikipedia page. Second is to preserve the search casing (Yes/No).\n')
         print('Third is for language settings (e.g. English, de, francais, etc.). Fourth is for implementing NLTK stoplist in provided languages (Yes/No).\n')
         print('commonwords accepts 1 optional argument (default: 100) for the number of most common words in the site to show\n')
         print('commonwordspct accepts 1 optional argument (default: 10) on the percentage threshold of word count to determine the most common words\n')
-        print('plotwords accepts 1 optional argument (default: 20) for the number of most common words to show as a GRAPH\n')
+        print('plotwords accepts 2 optional arguments. The first argument (default: 20) is for the number of most common words to show as a GRAPH. The second argument is the Nth most frequent word to start plotting from. (default: 1, starting from most frequent word)\n')
+        print('plotyear accepts 1 optional argument. The first argument (default: 20) is the number of years to plot in the graph. The frequency count of the most common years will be plotted. This allows the user to understand the years of interest for the Wikipedia Topic.\n')
         print('totalwords accepts 0 arguments and shows the total word count and unique word count\n')
         print('summary accepts 1 optional argument for the number of paragraphs (default: 2) and gives a summary of the Wikipedia page\n')
         print('gettext accepts 0 arguments and retrieves the full text of the Wikipedia title\n')
