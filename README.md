@@ -1,14 +1,14 @@
 # Wikipedia-Article-Scraper
 A full Python package that allows users to search for a Wiki article, scrape it and have features for text analytics. <br>
-Please feel free to download and use it!!!
+Please feel free to download and use it (wikiscrape.py)!!!
 
-## wikiscrape Package (can download wikiscrape.py and import it)
+## wikiscrape Package by Koh Jia Xuan
 ### This Python code can be used to search for a Wikipedia Article and do text analytics on it
 <br>
 To save a wikiscrape object, simply type: <br>
-import wikiscrape <br>
-var = wikiscrape.wiki('Search Article') <br>
-e.g. paris = wikiscrape.wiki('PArIs','Yes','french','Yes') means to search for the article Paris, auto format to proper case (Yes for 2nd argument, default Yes), search for French wikipedia (french for 3rd argument, default No) and apply nltk stoplist for french (Yes for 4th argument, default No)
+<b> import wikiscrape </b><br>
+<b> var = wikiscrape.wiki('Search Article') </b> <br> <br>
+e.g. paris = wikiscrape.wiki('PArIs','Yes','french','Yes') means to search for the article Paris, auto format to proper case (Yes for 2nd argument, default Yes), search for French wikipedia (french for 3rd argument, default No) and apply nltk stoplist for french (Yes for 4th argument, default No)  <br> <br>
 ### Full capabilities of wikiscrape package includes: <br>
 1. Able to search in multiple languages <br>
 2. Give suggestions on search terms if search is ambiguous <br>
