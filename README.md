@@ -2,7 +2,7 @@
 A full Python package that allows users to search for a Wiki article, scrape it and have features for text analytics. <br>
 Please feel free to download and use it (wikiscrape.py)!!!
 
-## wikiscrape Package by Koh Jia Xuan
+## wikiscrape Package by KJX
 ### This Python code can be used to search for a Wikipedia Article and do text analytics on it
 <br>
 To save a wikiscrape object, simply type: <br>
@@ -23,6 +23,7 @@ e.g. paris = wikiscrape.wiki('PArIs','Yes','french','Yes') means to search for t
 2. A graph plot of the most common words in the Wikipedia article <br>
 3. A graph plot on the most frequent Years mentioned in the article, to understand the Years of interest of the article <br>
 4. A summary on the total number of words and total number of unique words after implementing the stoplist of common words. <br>
+5. Analytics functions available in wikiscrape object are commonwords, commonwordspct, plotwords, plotyear, totalwords, summary, gettext. <br>
 
 #### Libraries used: requests, bs4, collections, matplotlib, re, os, nltk
 
