@@ -35,5 +35,5 @@ Package itself already has a comprehensive stoplist built inside to remove commo
 
 #### Updates: <br>
 1. 26 May 2019 - Added plotyear() function to plot the most frequent years mentioned
-2. 9 June 2019 - Added markdown for explaination and added comments in the code for understanding <br>
+2. 9 June 2019 - Added markdown for explanation and added comments in the code for understanding <br>
 3. For any questions or suggestions, please contact me at my Github account - https://github.com/kohjiaxuan/ <br>
