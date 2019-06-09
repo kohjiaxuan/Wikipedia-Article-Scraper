@@ -2,7 +2,7 @@
 A full Python package that allows users to search for a Wiki article, scrape it and have features for text analytics. <br>
 Please feel free to download and use it <b>(wikiscrape.py)</b>! <br>
 ![Linkedin Example](https://github.com/kohjiaxuan/Wikipedia-Article-Scraper/blob/master/WikiScrape_Example.PNG)  <br>
-![Linkedin Example](https://github.com/kohjiaxuan/Wikipedia-Article-Scraper/blob/master/coldplayyearcount.png)  <br><br>
+![Coldplay Year Mentions](https://github.com/kohjiaxuan/Wikipedia-Article-Scraper/blob/master/coldplayyearcount2.jpg)  <br><br>
 
 ## wikiscrape Package by KJX
 ### This Python code can be used to search for a Wikipedia Article and do text analytics on it
