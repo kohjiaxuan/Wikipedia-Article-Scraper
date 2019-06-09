@@ -30,7 +30,8 @@ e.g. paris = wikiscrape.wiki('PArIs','Yes','french','Yes') means to search for t
 Refer to images in the repository for examples. The earliest image 'bar.png' made 4 months ago was the initial design for the bar chart for word frequency.
 <br><br>
 
-#### Libraries used: requests, bs4, collections, matplotlib, re, os, nltk
+#### Libraries used: requests, bs4, collections, matplotlib, re, os, nltk (optional, only if using stoplist)
+Package itself already has a comprehensive stoplist built inside to remove common words before text analytics <br>
 
 #### Updates: <br>
 1. 26 May 2019 - Added plotyear() function to plot the most frequent years mentioned
