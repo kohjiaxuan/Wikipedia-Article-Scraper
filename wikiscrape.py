@@ -740,15 +740,16 @@ class wiki:
             
     #HELP and basic documentation of available functions
     def HELP(self):
-        print('The wiki() class accepts 4 arguments. The first one is a compulsory title of the Wikipedia page. Second is to preserve the search casing (Yes/No).\n')
-        print('Third is for language settings (e.g. English, de, francais, etc.). Fourth is for implementing NLTK stoplist in provided languages (Yes/No).\n')
-        print('commonwords accepts 1 optional argument (default: 100) for the number of most common words in the site to show\n')
-        print('commonwordspct accepts 1 optional argument (default: 10) on the percentage threshold of word count to determine the most common words\n')
-        print('plotwords accepts 2 optional arguments. The first argument (default: 20) is for the number of most common words to show as a GRAPH. The second argument is the Nth most frequent word to start plotting from. (default: 1, starting from most frequent word)\n')
+        print('The wiki() class accepts 4 arguments. The first one is a compulsory title of the Wikipedia page. Second is to format the search string to proper/title case (Yes/No, default: Yes).')
+        print('Third is for language settings (e.g. English, de, francais, etc., default: English). Fourth is for implementing NLTK stoplist in provided languages (Yes/No, default: No).\n\n')
+        print('Functions/Methods of Wikipedia scraper package: \n')
+        print('commonwords accepts 1 optional argument (default: 100) for the number of most common words in the site and their frequencies to show.\n')
+        print('commonwordspct accepts 1 optional argument (default: 10) on the percentage threshold of word count to determine the most frequent words to show.\n')
+        print('plotwords accepts 2 optional arguments. The first argument (default: 20) is for the number of most frequent words to show as a GRAPH. The second argument is the Nth most frequent word to start plotting from. (default: 1, starting from most frequent word)\n')
         print('plotyear accepts 1 optional argument. The first argument (default: 20) is the number of years to plot in the graph. The frequency count of the most common years will be plotted. This allows the user to understand the years of interest for the Wikipedia Topic.\n')
-        print('totalwords accepts 0 arguments and shows the total word count and unique word count\n')
-        print('summary accepts 1 optional argument for the number of paragraphs (default: 2) and gives a summary of the Wikipedia page\n')
-        print('gettext accepts 0 arguments and retrieves the full text of the Wikipedia title\n')
+        print('totalwords accepts 0 argument and shows the total word count and unique word count\n')
+        print('summary accepts 2 optional arguments, the first one for the number of paragraphs to show (default: 2) and the second one - Yes to output string and No to print text (default: No). It gives a summary of the Wikipedia page\n')
+        print('gettext accepts 1 optional argument - Yes to output string and No to print text (default: No). It retrieves the full text of the Wikipedia title\n')
         
 #     def troubletest(self):
 #         index = 0
