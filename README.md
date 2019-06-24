@@ -1,6 +1,6 @@
 # Wikipedia-Article-Scraper
 A full Python package that allows users to search for a Wiki article, scrape it and have features for text analytics. <br>
-Please feel free to download and use it <b>(wikiscrape.py)</b>! <br>
+Please feel free to download the script file for personal usage! <b>(wikiscrape.py)</b> <br>
 ![Linkedin Example](https://github.com/kohjiaxuan/Wikipedia-Article-Scraper/blob/master/WikiScrape_Example.PNG)  <br>
 ![Coldplay Year Mentions](https://github.com/kohjiaxuan/Wikipedia-Article-Scraper/blob/master/coldplayyearcount2.jpg)  <br><br>
 
