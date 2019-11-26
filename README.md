@@ -44,13 +44,13 @@ Package itself already has a comprehensive stoplist built inside to remove commo
 1. 26 May 2019 - Added plotyear() function to plot the most frequent years mentioned, and removed years in the frequency count of word counter (commonwords & commonwordspct functions).
 2. 9 June 2019 - Added markdown for explanation and added comments in the code for understanding <br>
 3. 13 June 2019 - Updated documentation for plotyear, plotwords, summary and gettext function in .HELP(). <br>
-4. 25 November 2019 - Update coming very soon, stay tuned! <br>
-5. 27 November 2019 - Major update to the Python package, including: 
-  a. Adding of lemmatization feature (using NLTK) before using text analytics functions
-  b. Better documentation via docstrings and updating HELP function
-  c. Improving of graph plotting design and font size for plotwords and plotyear
-  d. Fixed some bugs for graph plotting including values not showing or showing up erroneously
-  e. Refactored the code, provided better names for key variables for user understanding 
-  f. Performance improvement of article search by removing unused variables and functions
-  g. Tested all functions and also error handling in case user puts in wrong parameters
+4. 25 November 2019 - Update coming very soon to patch issues and improve on Wikipedia package, stay tuned! <br>
+5. 27 November 2019 - Major update to the Python package, including: <br>
+  a. Adding of lemmatization feature (using NLTK) before using text analytics functions <br>
+  b. Better documentation via docstrings and updating HELP function <br>
+  c. Improving of graph plotting design and font size for plotwords and plotyear <br>
+  d. Fixed some bugs for graph plotting including values not showing or showing up erroneously <br>
+  e. Refactored the code, provided better names for key variables for user understanding <br>
+  f. Performance improvement of article search by removing unused variables and functions <br>
+  g. Tested all functions and also error handling in case user puts in wrong parameters <br><br>
 6. For any questions or suggestions, please contact me at my Linkedin account - https://www.linkedin.com/in/kohjiaxuan/ <br>
