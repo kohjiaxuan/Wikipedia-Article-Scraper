@@ -15,7 +15,7 @@ New Graph of plotting the most popular words in a Wikipedia Article:
 To save a wikiscrape object, simply type: <br>
 <b> import wikiscrape </b><br>
 <b> var = wikiscrape.wiki('Search Article') </b> <br> <br>
-e.g. paris = wikiscrape.wiki('PArIs','Yes','french','Yes','Yes') means to search for the article Paris, auto format to proper case (Yes for 2nd argument, default Yes), search for French wikipedia (french for 3rd argument, default No), apply nltk stoplist for french (Yes for 4th argument, default No) and lemmatize the article using nltk (Yes for 5th argument, default No) <br>
+e.g. paris = wikiscrape.wiki('PArIs','Yes','french','Yes','Yes') means to search for the article Paris, auto format to proper case (Yes for 2nd argument, default Yes), search for French wikipedia (french for 3rd argument, default English), apply nltk stoplist for french (Yes for 4th argument, default No) and lemmatize the article using nltk (Yes for 5th argument, default No) <br>
 
 ### Full capabilities of wikiscrape package include: <br>
 1. Able to search in multiple languages <br>
