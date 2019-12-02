@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
-
-
 import requests #Get the HTML code
 from bs4 import BeautifulSoup #Tidy up the code
 from collections import Counter #Counter to count occurances of each word
@@ -367,8 +364,8 @@ class wiki:
                     self.parashort.append(paragraph)
                     self.noofpara += 1
 
-            #Data cleaning for printing out summary of Wikipedia (2 paragraphs) if search is successful - cleantext_summary
-            self.parashort2 = self.cleantext_summary(self.parashort)
+            #Data cleaning for printing out summary of Wikipedia (2 paragraphs) if search is successful - __cleantext_summary
+            self.parashort2 = self.__cleantext_summary(self.parashort)
             
             #REMOVE UNWANTED ARRAYS
             self.parashort = []        
@@ -409,7 +406,7 @@ class wiki:
             print('Other useful information: Enclose title argument with single quotes. Spaces are allowed, and title is case insensitive.')
         
         
-    def cleantext_summary(self, corpus):
+    def __cleantext_summary(self, corpus):
         '''Gets summary of the text, internal method'''
         #Data cleaning for printing out summary of Wikipedia (2 paragraphs) if search is successful
         corpus = list(str(corpus)) #chop everything into letters for usage
@@ -703,7 +700,7 @@ class wiki:
                 self.parashort.append(paragraph)
                 self.noofpara += 1
 
-        self.parashort2 = self.cleantext_summary(self.parashort)
+        self.parashort2 = self.__cleantext_summary(self.parashort)
         #REMOVE UNWANTED ARRAYS
         self.parashort = []    
         
