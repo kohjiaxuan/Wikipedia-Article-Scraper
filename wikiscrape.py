@@ -1,13 +1,11 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-import requests #Get the HTML code
-from bs4 import BeautifulSoup #Tidy up the code
-from collections import Counter #Counter to count occurances of each word
-import matplotlib.pyplot as plt #graph plotting
-import re #regular expression to check if language setting is exactly 2 letters (for non common langs) in the argument
-import os #for plotwords to tell where file is saved
-import math #for calculating font size of graphs using exponential
+import requests # Get the HTML code
+from bs4 import BeautifulSoup # Tidy up the code
+from collections import Counter # Counter to count occurances of each word
+import matplotlib.pyplot as plt # graph plotting
+import re # regular expression to check if language setting is exactly 2 letters (for non common langs) in the argument
+import os # for plotwords to tell where file is saved
+import math # for calculating font size of graphs using exponential
+import datetime # for getting current year
 
 #var = wikiscrape.wiki('Article Search',optional arguments 2-4)
 #Arg 1 is article name in string, Arg 2 is to format in proper case (default Yes), Arg 3 is language (default EN), Arg 4 is use stoplist of NLTK (default No)
@@ -43,24 +41,28 @@ class wiki:
         self.nltkrun = False 
         if isinstance(checknltk, str): #check for string yes, no and other permutations
             if checknltk.lower().strip() in {'yes','true','y','t'}:
-                import nltk
-                nltk.download('stopwords')
-                nltk.download('wordnet')
-                from nltk.corpus import stopwords
-                from nltk.corpus import wordnet
-                self.nltkrun = True
-            elif checknltk.lower().strip() in {'no','false','n','f','na','n/a','nan'}:
-                self.nltkrun = False
-            else:
-                self.nltkrun = False
+                try:
+                    import nltk
+                    from nltk.corpus import stopwords
+                    from nltk.corpus import wordnet
+                    self.nltkrun = True
+                except:
+                    print("stopwords and wordnet are not downloaded. To download, execute pip install nltk. Next, input nltk.download('stopwords') and nltk.download('wordnet')")
+                    # nltk.download('stopwords')
+                    # nltk.download('wordnet')
+                    self.nltkrun = False
         elif isinstance(checknltk, bool): #check for boolean yes/no
             if checknltk == True:
-                import nltk
-                nltk.download('stopwords')
-                nltk.download('wordnet')
-                from nltk.corpus import stopwords
-                from nltk.corpus import wordnet
-                self.nltkrun = True
+                try:
+                    import nltk
+                    from nltk.corpus import stopwords
+                    from nltk.corpus import wordnet
+                    self.nltkrun = True
+                except:
+                    print("stopwords and wordnet are not downloaded. To download, execute pip install nltk. Next, input nltk.download('stopwords') and nltk.download('wordnet')")
+                    # nltk.download('stopwords')
+                    # nltk.download('wordnet')
+                    self.nltkrun = False
             else:
                 self.nltkrun = False
         else: #run default if options are invalid - don't run nltk stoplist
@@ -73,10 +75,13 @@ class wiki:
                 from nltk.stem import WordNetLemmatizer
                 self.lemmatizer = WordNetLemmatizer()
                 self.to_lemmatize = True
-            elif lemmatize.lower().strip() in {'no','false','n','f','na','n/a','nan'}:
-                self.to_lemmatize = False
-            else:
-                self.to_lemmatize = False
+                print('Lemmatizing of Wikipedia text is enabled!')
+        elif isinstance(lemmatize, bool):
+            if lemmatize == True:
+                from nltk.stem import WordNetLemmatizer
+                self.lemmatizer = WordNetLemmatizer()
+                self.to_lemmatize = True
+                print('Lemmatizing of Wikipedia text is enabled!')
 
         #Default: Stopword list obtained from nltk
         self.nltkstopword = []
@@ -527,11 +532,12 @@ class wiki:
         return [self.fullcount,self.fullcount2,self.fullwords,self.fullwords2]
     
     #Plot the most common words, 2nd argument allows you to choose number of words to plot, and 3rd arg is the Nth most common word to start plotting from
-    def plotwords(self,graphname='wordcount',wordcount2=20,startword=1):
-        '''plotwords accepts 3 optional arguments. 
+    def plotwords(self,graphname='wordcount',wordcount2=20,startword=1,removeyear=10):
+        '''plotwords accepts 4 optional arguments. 
         The first argument is the filename to save as (default: wordcount.png).
         The second argument (default: 20) is for the number of most frequent words to show as a GRAPH. 
-        The third argument is the Nth most frequent word to start plotting from. (default: 1, starting from most frequent word).'''
+        The third argument is the Nth most frequent word to start plotting from. (default: 1, starting from most frequent word).
+        The fourth argument removes the latest N years from the most frequent words (default: remove latest 10 years)'''
         if isinstance(wordcount2, int) == True and isinstance(startword, int) == True:
             if startword < 1 or wordcount2 < 1:
                 self.notify = 2 #Error as out of range, use default
@@ -546,6 +552,11 @@ class wiki:
             self.wordcount2 = 20
             self.startword = 1
             
+        if self.notify == 1:
+            print('Word count or start position specified is currently not an integer. Hence default of 20 words starting from 1st word is used for graph\n')
+        elif self.notify == 2:
+            print('Word count or start position specified must be 1 or greater. Default of 20 words starting from 1st word is used for graph\n')
+            
         # Change file name
         if isinstance(graphname, str) == True:
             self.graphname = graphname + '.png'
@@ -556,8 +567,27 @@ class wiki:
         #if start position is not modified (start from most common word, use default dict)
         #otherwise, have to make a new dictionary for plotting graph by getting start th to start + wordcount th words
         
-        self.yearban = ['2019','2018','2017','2016','2015','2014','2013','2012','2011','2010','0000'] 
-        # Banlist, omit these years in graph
+        self.curyear = datetime.datetime.now().year
+        # Banlist, omit the last n years in plotwords graph
+        self.yearban = ['0000'] 
+        
+        if isinstance(removeyear, int) == True:
+            if removeyear >= 0:
+                self.removeyear = removeyear
+            else:
+                self.removeyear = 10 # Error as years to remove cannot be negative
+                print('Number of latest years to exclude in word frequency graph cannot be negative. Excluding the most recent 10 years by default, starting from ' + str(self.curyear))
+        else:
+            self.removeyear = 10 # Error as not integer input, use default
+            print('Number of latest years to exclude in word frequency graph is invalid. Excluding the most recent 10 years by default, starting from ' + str(self.curyear))
+
+        for i in range(self.removeyear):
+            self.yearban.append(str(self.curyear - i))
+            if self.curyear - i == 0:
+                break
+        # print(self.yearban)
+        
+        # Store words and freq in dictionary
         self.topwords2 = {}
         self.wordno_graph = 0
         for i, (word, freq) in enumerate(dict(self.wordcounter.most_common()).items()):
@@ -583,7 +613,7 @@ class wiki:
         plt.rc('xtick', labelsize=20) 
         plt.style.use('ggplot')
         self.localgraph = plt.barh(range(len(self.topwords2)),self.wordvalues,tick_label=self.wordnames)
-        plt.title('Word Frequency of Wiki Article: ' + self.graphtitle + ' for the Top ' + str(self.wordno_graph) + ' words, starting from word number ' + str(self.startword),fontsize=18)
+        plt.title('Word Frequency of Wiki Article: ' + self.graphtitle + ' for the Top ' + str(self.wordno_graph) + ' words, starting from word number ' + str(self.startword),fontsize=22)
         
         #Colored bar graphs divided by green (most frequent words), orange (moderate), red (not as frequent)
         for i in range(self.wordno_graph):
@@ -597,13 +627,7 @@ class wiki:
         plt.savefig(self.graphname)
         plt.rcParams['figure.figsize'] = [22, 18]
         plt.show()
-        
-        
-        if self.notify == 1:
-            print('Word count or start position specified is currently not an integer. Hence default of 20 words starting from 1st word is used for graph\n')
-        elif self.notify == 2:
-            print('Word count or start position specified must be 1 or greater. Default of 20 words starting from 1st word is used for graph\n')
-            
+                
         self.cwd = os.getcwd()
         print('Graph is saved as ' + self.graphname + ' in directory: ' + str(self.cwd))
     
@@ -658,7 +682,7 @@ class wiki:
         plt.rc('xtick', labelsize=20) 
         plt.style.use('ggplot')
         self.yeargraph = plt.barh(range(len(self.yearlist)),self.yearvalues,tick_label=self.yearnames)
-        plt.title('Interest in ' + self.graphtitle + ' over the years measured by Frequency Count of each Year',fontsize=20)
+        plt.title('Interest in ' + self.graphtitle + ' over the years measured by Frequency Count of each Year',fontsize=22)
         
         for i in range(self.actualyearcount):
             if i <= float(self.actualyearcount)/3:
@@ -732,11 +756,13 @@ class wiki:
     def HELP(self):
         '''Explains how to use the class object wiki and also retrieves a list of methods with their actions.'''
         print('The wiki() class accepts 5 arguments. The first one is a compulsory title of the Wikipedia page. Second is to format the search string to proper/title case (Yes/No, default: Yes).')
-        print('Third is for language settings (e.g. English, de, francais, etc., default: English). Fourth and fifth is for implementing NLTK stoplist in provided languages and lemmatizing text respectively (Yes/No, default: No).\n\n')
+        print('Third is for language settings (e.g. English, de, francais, etc., default: English).')
+        print('Fourth is for implementing NLTK stoplist in provided language based on 3rd arg (Yes/No, default: standard stoplist provided).')
+        print('Fifth is for lemmatizing text (Yes/No, default: No).\n\n')
         print('Functions/Methods of Wikipedia scraper package: \n')
         print('commonwords accepts 1 optional argument (default: 100) for the number of most common words in the site and their frequencies to show.\n')
         print('commonwordspct accepts 1 optional argument (default: 10) on the percentage threshold of word count to determine the most frequent words to show.\n')
-        print('plotwords accepts 3 optional arguments. The first argument is the filename to save as (default: wordcount.png). The second argument (default: 20) is for the number of most frequent words to show as a GRAPH. The third argument is the Nth most frequent word to start plotting from. (default: 1, starting from most frequent word). The third argument is the filename to save as.\n')
+        print('plotwords accepts 4 optional arguments. The first argument is the filename to save as (default: wordcount.png). The second argument (default: 20) is for the number of most frequent words to show as a GRAPH. The third argument is the Nth most frequent word to start plotting from. (default: 1, starting from most frequent word). The third argument is the filename to save as. The fourth argument removes the latest N years from the most frequent words (default: remove latest 10 years)\n')
         print('plotyear accepts 2 optional argument. The first argument is the filename to save as (default: yearcount.png). The second argument (default: 20) is the number of years to plot in the graph. The frequency count of the most common years will be plotted. This allows the user to understand the years of interest for the Wikipedia Topic.\n')
         print('totalwords accepts 0 argument and shows the total word count and unique word count\n')
         print('summary accepts 2 optional arguments, the first one for the number of paragraphs to show (default: 2) and the second one - Yes to output string and No to print text (default: No). It gives a summary of the Wikipedia page\n')
