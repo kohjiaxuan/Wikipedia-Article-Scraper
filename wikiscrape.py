@@ -177,7 +177,7 @@ class wiki:
         for paragraph in self.wordcorpus: #append paragraphs starting with <p>
             self.para.append(paragraph)
 
-        self.relatedtopic = ",*RELATED WIKI TOPIC*" #Identify topics in Wikipedia with an URL to point out to user
+        self.relatedtopic = "RELATED WIKI TOPIC" #Identify topics in Wikipedia with an URL to point out to user
         for paragraph in self.wordcorpus2: #append paragraphs starting with <li>
             if str(paragraph).find('<li><a href=') != -1:
                 if str(paragraph).find('</a></li>') != -1 or str(paragraph).find('</a></sup></li>') != -1: 
@@ -303,7 +303,7 @@ class wiki:
                    'other', 'than', 'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also', 'back', 
                    'after', 'use', 'two', 'how', 'our', 'work', 'first', 'well', 'way', 'even', 'new', 'want','topic', 
                    'because', 'any', 'these', 'give', 'day', 'most', 'us','retrieved','^','archived',"•",'related',
-                   "',*related","wiki","topic*',","is","are",'was','since','such','articles','has','&amp;','p','b',
+                   'wiki','topic',"is","are",'was','since','such','articles','has','&amp;','p','b',
                   'january','february','march','april','may','june','july','august','september','october','november',
                   'december','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20',
                   '21','22','23','24','25','26','27','28','29','30','31','i','wa')
