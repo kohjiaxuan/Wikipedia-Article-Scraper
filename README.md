@@ -2,9 +2,7 @@
 A full Python package that allows users to search for a Wiki article, scrape it and have features for text analytics. <br>
 Please feel free to download the script file for personal usage! <b>(wikiscrape.py)</b> <br>
 ![Linkedin Example](https://github.com/kohjiaxuan/Wikipedia-Article-Scraper/blob/master/Images/WikiScrape_Example.PNG)  <br><br>
-Old Graph Plots: <br>
-![Coldplay Wiki - Years Mentioned](https://github.com/kohjiaxuan/Wikipedia-Article-Scraper/blob/master/Images/coldplayyearcount2.jpg)  <br><br>
-New Graph Plots:
+New Graph Plots of the years mentioned in a Wikipedia Article:
 ![Coldplay Wiki - Years Mentioned NEW](https://github.com/kohjiaxuan/Wikipedia-Article-Scraper/blob/master/Images/ColdplayWordCount2.png)  <br><br>
 New Graph of plotting the most popular words in a Wikipedia Article:
 ![Donald Trump Wiki - 40 Most Popular Words](https://github.com/kohjiaxuan/Wikipedia-Article-Scraper/blob/master/Donald_Trump_40words.png) <br><br>
